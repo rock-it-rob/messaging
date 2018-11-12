@@ -10,6 +10,10 @@
   <artifactId>messaging-web</artifactId>
   <version>1.0</version>
 
+  <properties>
+    <debug>false</debug>
+  </properties>
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -22,7 +26,17 @@
     -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jetty</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -31,10 +45,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jersey</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-jetty</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!--
     Spring Boot Devtools
@@ -55,8 +71,10 @@
           <systemPropertyVariables>
             <!-- This property needs to be defined here in order to read from
             the command line. This is dumb. -->
-            <spring.profiles.active>${spring.profiles.active}
+            <spring.profiles.active>
+              ${spring.profiles.active}
             </spring.profiles.active>
+            <debug>${debug}</debug>
           </systemPropertyVariables>
         </configuration>
       </plugin>
