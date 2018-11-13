@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+
+  # webapp is the main application.
+  web:
+    build:
+      context: web
+      args:
+        http_proxy: ${http_proxy}
+        https_proxy: ${https_proxy}
+        app_version: 1.0
+    ports:
+    - '80:8080'
