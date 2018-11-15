@@ -3,6 +3,7 @@ package com.rob.messaging.web.rs.resource;
 import com.rob.messaging.web.rs.response.HealthResponse;
 import com.rob.messaging.web.rs.response.entity.HealthEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.MediaType;
  * @author Rob Benton
  */
 @Path(Health.PATH)
+@Component
 public class Health
 {
     public static final String PATH = "health";

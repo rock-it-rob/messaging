@@ -1,9 +1,6 @@
 package com.rob.messaging.web.rs.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * AbstractResponse creates a contract so that all JAX-RS response include a
@@ -11,14 +8,12 @@ import java.util.TimeZone;
  *
  * @author Rob Benton
  */
-public abstract class AbstractResponse
+public abstract class AbstractResponse implements SimpleResponse
 {
-    private static final String TIMEZONE = "CST";
-
     int status;
     Date generated;
 
-    AbstractResponse()
+    public AbstractResponse()
     {
         this.generated = new Date();
     }
@@ -28,6 +23,7 @@ public abstract class AbstractResponse
         this.status = status;
     }
 
+    @Override
     public int getStatus()
     {
         return status;
@@ -38,7 +34,7 @@ public abstract class AbstractResponse
         this.generated = generated;
     }
 
-    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss zzz", timezone = TIMEZONE)
+    @Override
     public Date getGenerated()
     {
         return generated;

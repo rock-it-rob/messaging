@@ -1,6 +1,9 @@
 package com.rob.messaging.web.rs;
 
+import com.rob.messaging.web.rs.mapper.ConstraintViolationExceptionMapper;
+import com.rob.messaging.web.rs.mapper.WebApplicationExceptionMapper;
 import com.rob.messaging.web.rs.resource.Health;
+import com.rob.messaging.web.rs.resource.Message;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +23,12 @@ public class JerseyResourceConfig extends ResourceConfig
 
     public JerseyResourceConfig()
     {
+        // Resource classes
         register(Health.class);
+        register(Message.class);
+
+        // Exception mappers
+        register(WebApplicationExceptionMapper.class);
+        register(ConstraintViolationExceptionMapper.class);
     }
 }
