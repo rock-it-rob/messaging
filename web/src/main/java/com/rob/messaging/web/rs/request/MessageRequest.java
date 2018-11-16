@@ -2,6 +2,8 @@ package com.rob.messaging.web.rs.request;
 
 import com.rob.messaging.web.rs.resource.Message;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * MessageRequest is a POJO for passing information through {@link Message}
  * resource endpoints.
@@ -10,6 +12,7 @@ import com.rob.messaging.web.rs.resource.Message;
  */
 public final class MessageRequest
 {
+    @NotEmpty(message = "Message body is required")
     private String body;
 
     public String getBody()
