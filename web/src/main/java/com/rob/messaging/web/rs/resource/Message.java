@@ -5,10 +5,7 @@ import com.rob.messaging.web.rs.response.SimpleResponse;
 import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,8 +32,11 @@ public class Message
 
     public static final String PATH = "message";
 
-    @Value("${spring.rabbitmq.template.exchange}")
+    @Value("${exchange}")
     private String exchangeName;
+
+    @Value("${queue}")
+    private String queueName;
 
     @Autowired
     private AmqpAdmin amqpAdmin;
@@ -44,6 +44,13 @@ public class Message
     @Autowired
     private AmqpTemplate amqpTemplate;
 
+    /**
+     * Initializes resources prior to use.
+     *
+     * <h1>RabbitMQ Exchange</h1>
+     * Since this class sends messages to a RabbitMQ exchange, that exchange
+     * is declared here.
+     */
     @PostConstruct
     private void postConstruct()
     {
@@ -62,9 +69,23 @@ public class Message
     @Consumes(MediaType.APPLICATION_JSON)
     public SimpleResponse sendMessage(final @NotNull(message = "message cannot be null") MessageRequest messageRequest)
     {
+        // The direct exchange declared earlier in this class is bound to a
+        // queue. Sending a message to that exchange without a routing key will
+        // deliver it to the intended queue.
         amqpTemplate.send(
+            exchangeName,
+            null,
             MessageBuilder
                 .withBody(messageRequest.getBody().getBytes())
+                .build()
+        );
+        // The default exchange can be used with a routing key of the name of
+        // the queue as well.
+        amqpTemplate.send(
+            null,
+            queueName,
+            MessageBuilder
+                .withBody("Sending via default exchange".getBytes())
                 .build()
         );
 
